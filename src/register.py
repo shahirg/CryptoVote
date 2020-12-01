@@ -1,18 +1,12 @@
-from typing import ValuesView
 
-import address
 from voter import Voter
 from address import AddressParser, Address
 import datetime
 
-def check_dob(dob) -> bool:
-    if len(dob != 10):
-        return False
-    dob = dob.split('-', maxsplit = 2)
+
 
 def get_dob():
     valid_dob = False;
-    now = datetime.datetime.now()
     while not valid_dob:
         dob = input('\nEnter DOB (XX-XX-XXXX):\nex: 01-27-1965\n')
 
@@ -26,6 +20,7 @@ def get_dob():
             print('Invalid Date!\n{}'.format(e))
             continue
     return dob
+    
 
 def get_address():
     fix = ''
@@ -41,7 +36,7 @@ def get_address():
     return full_address
                
 
-def pad_string(x: str,length: int):
+def pad_string(x: str,length: int) ->str:
     while(len(x) < length):
         x += ' '
     return x
