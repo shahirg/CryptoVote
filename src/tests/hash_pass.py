@@ -12,5 +12,5 @@ def get_random_salt(length):
     return result_str
 
 if __name__ == "__main__":
-    print(hash_str('A horse, a horse! My kingdom for a horse!'))
+    print(hash_str('This is a test'))
 

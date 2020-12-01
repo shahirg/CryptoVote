@@ -2,7 +2,7 @@
 from voter import Voter
 from address import AddressParser, Address
 import datetime
-
+import csv
 
 
 def get_dob():
@@ -19,7 +19,8 @@ def get_dob():
         except ValueError as e:
             print('Invalid Date!\n{}'.format(e))
             continue
-    return dob
+        return dob
+    
     
 
 def get_address():
@@ -32,7 +33,7 @@ def get_address():
         ap = AddressParser()
         full_address = ap.parse_address('{}, {}, {}, {}'.format(address,city,state,zip_code))
         print('\n-------- Verify Address -------\n{}'.format(full_address))
-        fix = input("Type 'yes' to confirm")
+        fix = input("Type 'yes' to confirm: ")
     return full_address
                
 
@@ -43,7 +44,9 @@ def pad_string(x: str,length: int) ->str:
 
 def register(min_age = 18,city= 'New Brunswick',state= 'NJ') -> None:
     print('---------Voter Registration---------\n')
-    name = input("Enter Name:")
+    
+    first_name = input("Enter First Name: ").upper()
+    last_name = input("Enter Last Name: ").upper()
     dob = get_dob()
     age = (datetime.date.today() - dob).days/365
     print(age)
@@ -52,7 +55,18 @@ def register(min_age = 18,city= 'New Brunswick',state= 'NJ') -> None:
         return 
 
     address = get_address()
-    registered_voter = Voter(name,dob,address)
+    #FOR now voter id will just be a numbering system
+    with open('voterid.txt','r') as file:
+        voter_id = int(file.readline())
+    voter_id += 1
+    with open('voterid.txt','w') as file:
+        file.write(str(voter_id))
+        
+    registered_voter = Voter(voter_id,first_name,last_name,dob,address)
+
+    with open('voters.csv','a') as file:
+        writer = csv.writer(file, delimiter = ',')
+        writer.writerow([str(voter_id),repr(registered_voter)])
 
 
 if __name__ == "__main__":
